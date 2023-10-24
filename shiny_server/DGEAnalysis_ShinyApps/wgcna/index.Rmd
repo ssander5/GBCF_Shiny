@@ -19,7 +19,6 @@ margin-right: auto;
 #### Setup ####
 
 # load packages 
-library(shiny)
 library(shinythemes)
 library(WGCNA)
 library(dplyr)
