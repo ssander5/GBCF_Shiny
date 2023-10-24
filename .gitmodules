@@ -1,6 +1,3 @@
-[submodule "DGEAnalysis_ShinyApps"]
-	path = DGEAnalysis_ShinyApps
-	url = https://github.com/ElizabethBrooks/DGEAnalysis_ShinyApps
 [submodule "shiny_in_R/DGEAnalysis_ShinyApps"]
 	path = shiny_in_R/DGEAnalysis_ShinyApps
 	url = https://github.com/ElizabethBrooks/DGEAnalysis_ShinyApps
