@@ -1,6 +1,0 @@
-[submodule "shiny_in_R/DGEAnalysis_ShinyApps"]
-	path = shiny_in_R/DGEAnalysis_ShinyApps
-	url = https://github.com/ElizabethBrooks/DGEAnalysis_ShinyApps
-[submodule "shiny_in_R/crispRdesignR"]
-	path = shiny_in_R/crispRdesignR
-	url = https://github.com/ssander5/crispRdesignR
