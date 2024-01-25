@@ -1,3 +1,6 @@
+## Code for the User Interface through Shiny
+
+
 #library(shiny)
 library(crispRdesignR)
 library(seqinr)
@@ -17,8 +20,8 @@ if (length(installed_genomes) == 0) {
 }
 
 gene_list=list("Dmagna006965-T1","Dmagna006964-T1")
-gene_list=list.files(".", pattern="*sgRNA.RDS", all.files=TRUE, full.names=FALSE)
-gene_list=lapply(X=gene_list, FUN = function(t) gsub(pattern=".int_sgRNA.RDS", replacement="", x=t, fixed=TRUE))
+gene_list=list.files("./pre_run/", pattern="*hits.RDS", all.files=TRUE, full.names=FALSE)
+gene_list=lapply(X=gene_list, FUN = function(t) gsub(pattern=".hits.RDS", replacement="", x=t, fixed=TRUE))
 
 ui <- fluidPage(
   navbarPage("crispRdesignR",
@@ -29,8 +32,7 @@ ui <- fluidPage(
                           tags$div(id = "placeholder1"),
                           selectizeInput("genome_select", "Select Genome",
                                       installed_genomes),
-                          selectInput("gene_select", "Select Gene",
-                                      gene_list),
+                          textInput("gene_select","Enter Gene Name","i.e. Dmagna00243-T1"),
                           tags$div(id = "placeholder5"),
                           actionButton("run", "Find sgRNA", icon("paper-plane"))
                         ),
@@ -91,12 +93,12 @@ server <- function(input, output) {
              gene_annotation_file("placeholder")
           }
 
-           filename = paste(input$'gene_select',".hits.RDS",sep="")
+           filename = paste("./pre_run/",input$'gene_select',".hits.RDS",sep="")
            hits = readRDS(file=filename)
 
            if ((length(hits) == 0) == FALSE) {
           ## Starts creating the sgRNA table
-              filename2 = paste(input$'gene_select',".int_sgRNA.RDS",sep="")
+              filename2 = paste("./pre_run/",input$'gene_select',".int_sgRNA.RDS",sep="")
               int_sgRNA_data = readRDS(filename2)
 
           ## Adds color to indicate unfavorable GC content
@@ -151,19 +153,19 @@ server <- function(input, output) {
           ## Outputs the Table
             maindf$sgRNA_data <- proc_sgRNA_data
             downloadmaindf$sgRNA_data <- int_sgRNA_data
-            filename3 = paste(input$'gene_select',".int_offtarget.RDS",sep="")
+            filename3 = paste("./pre_run/",input$'gene_select',".int_offtarget.RDS",sep="")
             int_offtarget_data = readRDS(filename3)
 
             ## Adds code to color mismatches red within the off target sequences
             off_offseq <- as.character(unlist(int_offtarget_data[8]))
             off_sgRNAseq <- as.character(unlist(int_offtarget_data[1]))
-            #for (x in 1:length(off_offseq)) {
-              #justsgRNA <- off_sgRNAseq[x]
-              #justoff <- off_offseq[x]
-              #splitjustsgRNA <- stringr::str_split(justsgRNA, "", simplify = TRUE)
-              #splitoffsgRNA <- stringr::str_split(justoff, "", simplify = TRUE)
+            for (x in 1:length(off_offseq)) {
+              justsgRNA <- off_sgRNAseq[x]
+              justoff <- off_offseq[x]
+              splitjustsgRNA <- stringr::str_split(justsgRNA, "", simplify = TRUE)
+              splitoffsgRNA <- stringr::str_split(justoff, "", simplify = TRUE)
               #mismatches <- which(splitjustsgRNA != splitoffsgRNA)
-              #splitlistoffsgRNA <- as.list(splitoffsgRNA)
+              splitlistoffsgRNA <- as.list(splitoffsgRNA)
               #if (length(mismatches) != 0){
               #  for (g in length(mismatches):1) {
               #     splitlistoffsgRNA <- append(splitlistoffsgRNA, '</span>', after = mismatches[g])
